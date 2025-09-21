@@ -26,18 +26,19 @@ import kotlinx.coroutines.delay
 @Composable
 fun MainNavHost() {
     val navController = rememberNavController()
-    var loadingCompleted by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        delay(10)
-        loadingCompleted = true
-    }
     NavHost(
         navController = navController,
         startDestination = SplashScreenNav
 
     ) {
         composable<SplashScreenNav> {
+            var loadingCompleted by remember { mutableStateOf(false) }
+
+            LaunchedEffect(Unit) {
+                delay(2000)
+                loadingCompleted = true
+            }
             SplashScreen(
                 isLoading = loadingCompleted,
                 onLoadingCompleted = {

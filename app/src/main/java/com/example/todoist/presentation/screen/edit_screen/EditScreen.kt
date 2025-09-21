@@ -83,10 +83,9 @@ fun EditScreen(
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
             .navigationBarsPadding()
-            .imePadding(),
+            .imePadding()
+            .fillMaxSize(),
         topBar = {
             TopAppBar(title = {
                 Text(
@@ -117,7 +116,9 @@ fun EditScreen(
 
                 },
                 enabled = isButtonEnabled,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Teal,
                 )
@@ -130,9 +131,9 @@ fun EditScreen(
                 AddEditState.Empty -> {
                     Column(
                         modifier = Modifier
-                            .fillMaxSize()
                             .padding(padding)
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .fillMaxSize(),
                         verticalArrangement = Arrangement.Top
                     ) {
                         isComposableReady = true
