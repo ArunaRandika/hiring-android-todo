@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -11,6 +14,15 @@ android {
     namespace = "com.example.todoist"
     compileSdk = 36
 
+    val secretsFile = rootProject.file("secrets.properties")
+    val secrets = Properties()
+
+    if (secretsFile.exists()) {
+        secrets.load(FileInputStream(secretsFile))
+    } else {
+        logger.warn("secrets.properties not found!")
+    }
+
     defaultConfig {
         applicationId = "com.example.todoist"
         minSdk = 30
@@ -19,6 +31,71 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("long", "BUILD_TIME", "${System.currentTimeMillis()}L")
+        buildConfigField("String", "API_KEY", "\"${secrets.getProperty("API_KEY", "")}\"")
+        buildConfigField("String", "BASE_URL", "\"${secrets.getProperty("BASE_URL", "")}\"")
+    }
+
+    signingConfigs {
+
+        create("release") {
+            storeFile = file(secrets.getProperty("STORE_FILE", "todo-keystore.jks"))
+            storePassword = secrets.getProperty("KEYSTORE_PASSWORD", "")
+            keyPassword = secrets.getProperty("KEY_PASSWORD", "")
+            keyAlias = secrets.getProperty("KEY_ALIAS", "")
+        }
+
+    }
+
+    flavorDimensions += listOf("country", "env")
+    
+    productFlavors {
+        create("sriLanka") {
+            dimension = "country"
+            versionNameSuffix = "-Lk"
+            resValue("string", "app_name", "ToDoList LK")
+        }
+        create("canada") {
+            dimension = "country"
+            versionNameSuffix = "-Ca"
+            resValue("string", "app_name", "DoToIst CA")
+        }
+        create("live") {
+            dimension = "env"
+            buildConfigField("String", "BASE_URL_LANKA", "\"https://live.srilanka.example.com\"")
+            buildConfigField("String", "BASE_URL_CANADA", "\"https://live.canada.example.com\"")
+        }
+        create("staging") {
+            dimension = "env"
+            buildConfigField("String", "BASE_URL_LANKA", "\"https://staging.srilanka.example.com\"")
+            buildConfigField("String", "BASE_URL_CANADA", "\"https://staging.canada.example.com\"")
+        }
+        create("dev") {
+            dimension = "env"
+            buildConfigField("String", "BASE_URL_LANKA", "\"https://dev.srilanka.example.com\"")
+            buildConfigField("String", "BASE_URL_CANADA", "\"https://dev.canada.example.com\"")
+        }
+    }
+
+    sourceSets {
+        sourceSets.getByName("sriLanka") {
+            java {
+                srcDirs("src/lk/java")
+            }
+            res {
+                srcDirs("src/lk/res")
+            }
+        }
+        sourceSets.getByName("canada") {
+            java {
+                srcDirs("src/ca/java")
+            }
+            res {
+                srcDirs("src/ca/res")
+            }
+        }
+
     }
 
     buildTypes {
@@ -39,6 +116,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
