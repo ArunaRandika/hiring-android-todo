@@ -19,3 +19,19 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class dagger.** { *; }
+-keep class javax.inject.** { *; }
+-keep class * extends dagger.hilt.android.lifecycle.HiltViewModel
+
+#RoomDB
+-keep class * extends androidx.room.RoomDatabase
+-keep @androidx.room.Entity class *
+-keep @androidx.room.Dao class *
+
+#Compose
+-keep class androidx.compose.** { *; }
+-dontwarn androidx.compose.**
+
+#Navigation args
+-keep @kotlinx.serialization.Serializable class * { *; }
