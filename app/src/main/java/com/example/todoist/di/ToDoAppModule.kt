@@ -1,9 +1,13 @@
-package com.example.todoist
+package com.example.todoist.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.todoist.data.repository.ToDoDataRepositoryImpl
+import com.example.todoist.data.repository.ToDoRepositoryImpl
 import com.example.todoist.data.storage.ToDoDataBase
 import com.example.todoist.data.storage.dao.TodoDao
+import com.example.todoist.domain.repository.ToDoDataRepository
+import com.example.todoist.domain.repository.ToDoRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,5 +32,19 @@ object TodoModule {
     @Singleton
     fun provideTodoDao(database: ToDoDataBase): TodoDao {
         return database.todoDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideToDoDataRepository(todoDao: TodoDao): ToDoDataRepository {
+        return ToDoDataRepositoryImpl(todoDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTodoRepository(
+        toDoDataRepository: ToDoDataRepository
+    ): ToDoRepository {
+        return ToDoRepositoryImpl(toDoDataRepository)
     }
 }
