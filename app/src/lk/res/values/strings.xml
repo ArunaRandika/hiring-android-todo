@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ToDoList LK</string>
+    <string name="currency">LKR</string>
+    <string name="empty_msg">පෙන්වීමට කිසිවක් නැත</string>
+    <string name="add_todo">එකතු කරන්න</string>
+    <string name="edit_todo">සංස්කරණය කරන්න</string>
+</resources>
+
