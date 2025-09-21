@@ -46,6 +46,13 @@ android {
             keyAlias = secrets.getProperty("KEY_ALIAS", "")
         }
 
+//        create("release") {
+//            storeFile = rootProject.file("todo-keystore.jks")
+//            storePassword = "rand@123"
+//            keyPassword = "rand@1233"
+//            keyAlias = "todo-app"
+//        }
+
     }
 
     flavorDimensions += listOf("country", "env")
@@ -100,13 +107,21 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+        }
+
+        debug {
+
+            enableAndroidTestCoverage = false
+
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
