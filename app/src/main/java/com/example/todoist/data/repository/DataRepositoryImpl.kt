@@ -1,7 +1,9 @@
 package com.example.todoist.data.repository
 
+import com.example.todoist.data.mapper.toTodoItem
 import com.example.todoist.data.model.TodoEntity
 import com.example.todoist.data.storage.dao.TodoDao
+import com.example.todoist.domain.model.ToDoItem
 import com.example.todoist.domain.repository.ToDoDataRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -10,10 +12,10 @@ import javax.inject.Inject
 class ToDoDataRepositoryImpl @Inject constructor(
     private val toDoDao: TodoDao
 ) : ToDoDataRepository {
-    override fun getToAllToDoData(): Flow<List<String>> {
+    override fun getToAllToDoData(): Flow<List<ToDoItem>> {
         return toDoDao.getAllToDoItems().map { cachedTodos ->
             cachedTodos.map { cachedTodo ->
-               ""
+               cachedTodo.toTodoItem()
             }
         }
     }
