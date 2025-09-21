@@ -49,17 +49,17 @@ android {
     }
 
     flavorDimensions += listOf("country", "env")
-    
+
     productFlavors {
         create("sriLanka") {
             dimension = "country"
             versionNameSuffix = "-Lk"
-            resValue("string", "app_name", "ToDoList LK")
+            resValue("string", "app_name", "tasked LK")
         }
         create("canada") {
             dimension = "country"
             versionNameSuffix = "-Ca"
-            resValue("string", "app_name", "DoToIst CA")
+            resValue("string", "app_name", "tasked CA")
         }
         create("live") {
             dimension = "env"
